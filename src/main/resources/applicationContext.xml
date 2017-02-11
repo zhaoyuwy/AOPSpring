@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans default-autowire="byName"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
+
+       xmlns:tx="http://www.springframework.org/schema/tx"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+              http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+              http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+
+              http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+
+              http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <description>Spring公共配置文件</description>
+    <!-- 定义受环境影响易变的变量 -->
+    <context:component-scan base-package="com.*"/>
+    <!-- 自动扫描被@Aspect注解的bean-->
+    <aop:aspectj-autoproxy/>
+
+    <!-- 开启注解扫描 -->
+    <context:component-scan base-package="com.syz.test.service"></context:component-scan>
+
+    <!-- 开启aop注解方式 -->
+    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+
+    <bean id="myInterceptor" class="com.syz.test.aopAnotion.MyInterceptor"/>
+    <bean id="logHandlerAop" class="com.syz.test.aopAnotion.LogHandlerAop"/>
+    <bean id="logTest" class="com.syz.test.business.LogTest"/>
+    <bean
+            class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+
+        <property name="ignoreResourceNotFound" value="true"/>
+
+        <property name="locations">
+
+            <list>
+
+                <!-- 标准配置 -->
+
+                <value>classpath*:/application.properties</value>
+
+            </list>
+
+        </property>
+
+    </bean>
+
+    <!-- 持久化用到springJDBC，涉及到长文章类型字段的操作 -->
+
+    <bean id="nativeJdbcExtractor"
+
+          class="org.springframework.jdbc.support.nativejdbc.CommonsDbcpNativeJdbcExtractor"
+
+          lazy-init="true"/>
+
+    <bean id="lobHandler" class="org.springframework.jdbc.support.lob.OracleLobHandler"
+
+          lazy-init="true">
+
+        <property name="nativeJdbcExtractor">
+
+            <ref local="nativeJdbcExtractor"/>
+
+        </property>
+
+    </bean>
+
+    <!-- 使用annotation 自动注册bean(需要用到的包),并保证@Required,@Autowired的属性被注入 -->
+
+    <context:component-scan base-package="com.syz.test.entity"/>
+
+
+    <!-- 配置数据源 -->
+
+    <bean id="dataSource"
+
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+
+        <property name="driverClassName" value="${jdbc.driver}"/>
+
+        <property name="url" value="${jdbc.url}"/>
+
+        <property name="username" value="${jdbc.username}"/>
+
+        <property name="password" value="${jdbc.password}"/>
+
+
+    </bean>
+
+
+    <!-- Hibernate配置 -->
+
+    <bean id="sessionFactory"
+
+          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+
+        <!-- 配置Hibernate拦截器,用于同步索引 -->
+
+        <!--<property name="entityInterceptor" ref="luceneEntityInterceptor" /> -->
+
+        <property name="dataSource" ref="dataSource"/>
+
+        <property name="lobHandler" ref="lobHandler"/>
+
+        <property name="namingStrategy">
+
+            <bean class="org.hibernate.cfg.ImprovedNamingStrategy"/>
+
+        </property>
+
+        <property name="hibernateProperties">
+
+            <props>
+
+                <!-- 配置Hibernate SQL方言，可以根据版本，下面的通用 -->
+
+                <!-- <prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop> -->
+
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+
+                <prop key="hibernate.cache.use_query_cache">true</prop>
+
+            </props>
+
+        </property>
+
+        <property name="packagesToScan"
+                  value=" com.syz.test,com.syz.test.dao.impl.*"/>
+
+    </bean>
+
+
+    <!-- 事务管理器配置,单数据源事务 -->
+
+    <bean id="transactionManager"
+
+          class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+
+        <property name="sessionFactory" ref="sessionFactory"/>
+
+    </bean>
+
+    <!-- 使用annotation定义事务 -->
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!-- <bean id="personDao" class="com.syz.test.dao.impl.PersonDaoImpl"/> -->
+
+
+    <bean id="helloWorldImpl1" class="com.syz.test.aopPart.HelloWorldImpl1"/>
+    <bean id="helloWorldImpl2" class="com.syz.test.aopPart.HelloWorldImpl2"/>
+    <bean id="timeHandler" class="com.syz.test.aopPart.TimeHandler"/>
+    <bean id="logHandler" class="com.syz.test.aopPart.LogHandler"/>
+    <aop:config>
+        <aop:aspect id="time" ref="timeHandler" order="1">
+            <aop:pointcut id="addAllMethod" expression="execution(* com.syz.test.aopPart.HelloWorld.*(..))"/>
+            <aop:before method="printTime" pointcut-ref="addAllMethod"/>
+            <aop:after method="printTime" pointcut-ref="addAllMethod"/>
+        </aop:aspect>
+        <aop:aspect id="log" ref="logHandler" order="2">
+            <aop:pointcut id="printLog" expression="execution(* com.syz.test.aopPart.HelloWorld.*(..))"/>
+            <aop:before method="LogBefore" pointcut-ref="printLog"/>
+            <aop:after method="LogAfter" pointcut-ref="printLog"/>
+        </aop:aspect>
+    </aop:config>
+</beans>

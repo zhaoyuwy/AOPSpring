@@ -1,0 +1,19 @@
+[INFO][2016-12-17 14:47:02,214][main][com.syz.test.aopAnotion.MyInterceptor  50] doAround 进入方法---环绕通知
+[INFO][2016-12-17 14:48:44,790][main][com.syz.test.aopAnotion.LogHandlerAop  35] LogHandlerAop doAround 进入方法---环绕通知5%%%%%%%%%%%%%%%%%
+[INFO][2016-12-17 14:48:44,795][main][com.syz.test.aopAnotion.MyInterceptor  50] doAround 进入方法---环绕通知
+[INFO][2016-12-17 14:48:44,796][main][com.syz.test.aopAnotion.LogHandlerAop  38] LogHandlerAop 退出方法---环绕通知%%%%%%%%%%%%%%%%%%%
+[INFO][2016-12-17 14:51:53,767][main][com.syz.test.aopAnotion.LogHandlerAop  35] LogHandlerAop doAround 进入方法---环绕通知5%%%%%%%%%%%%%%%%%
+[INFO][2016-12-17 14:51:53,772][main][com.syz.test.aopAnotion.LogHandlerAop  38] LogHandlerAop 退出方法---环绕通知%%%%%%%%%%%%%%%%%%%
+[INFO][2016-12-17 15:01:34,619][main][com.syz.test.aopAnotion.LogHandlerAop  35] LogHandlerAop doAround 进入方法---环绕通知5%%%%%%%%%%%%%%%%%
+[INFO][2016-12-17 15:01:34,624][main][test.com.syz.test.hibernate.PersonDaoClearTest  14] ###########LogTest fistMyAopLog4j ceshi
+[INFO][2016-12-17 15:01:34,624][main][com.syz.test.aopAnotion.LogHandlerAop  38] LogHandlerAop 退出方法---环绕通知%%%%%%%%%%%%%%%%%%%
+[INFO][2016-12-17 15:06:37,254][main][com.syz.test.aopAnotion.LogHandlerAop  37] LogHandlerAop doAround 进入方法---环绕通知5%%%%%%%%%%%%%%%%%
+[INFO][2016-12-17 15:06:37,258][main][test.com.syz.test.hibernate.PersonDaoClearTest  14] ###########LogTest fistMyAopLog4j ceshi
+[INFO][2016-12-17 15:06:37,259][main][com.syz.test.aopAnotion.LogHandlerAop  40] LogHandlerAop 退出方法---环绕通知%%%%%%%%%%%%%%%%%%%
+[INFO][2016-12-17 15:09:03,821][main][com.syz.test.aopAnotion.LogHandlerAop  37] LogHandlerAop doAround 进入方法---环绕通知5%%%%%%%%%%%%%%%%%
+[INFO][2016-12-17 15:09:03,826][main][test.com.syz.test.hibernate.PersonDaoClearTest  19] ###########LogTest fistMyAopLog4jddd ceshi
+[INFO][2016-12-17 15:09:03,827][main][com.syz.test.aopAnotion.LogHandlerAop  40] LogHandlerAop 退出方法---环绕通知%%%%%%%%%%%%%%%%%%%
+[INFO][2016-12-18 09:50:41,441][main][com.syz.test.aopAnotion.MyInterceptor  50] doAround 进入方法---环绕通知
+[INFO][2016-12-18 09:53:24,048][main][com.syz.test.aopAnotion.MyInterceptor  50] doAround 进入方法---环绕通知
+[INFO][2016-12-25 12:17:32,401][main][com.syz.test.aopAnotion.MyInterceptor  50] doAround 进入方法---环绕通知
+[INFO][2017-02-11 09:34:56,079][main][com.syz.test.aopAnotion.MyInterceptor  50] doAround 进入方法---环绕通知
